@@ -1,4 +1,4 @@
-# test_app
+# I_Am_Rich
 
 A new Flutter project.
 
