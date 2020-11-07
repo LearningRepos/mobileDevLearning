@@ -11,15 +11,14 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^0.1.2
+  audioplayers: ^0.16.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter:
-
   uses-material-design: true
 
   assets:
     - assets/
-
