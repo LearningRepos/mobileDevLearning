@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 
-// ignore: camel_case_types
-// ignore: must_be_immutable
-// ignore: camel_case_types
-class Card_Content extends StatelessWidget {
-  String contentText;
-  Icon contentIcon;
-  Card_Content(this.contentText, this.contentIcon);
+class CardContent extends StatelessWidget {
+  final String contentText;
+  final Icon contentIcon;
+  CardContent(this.contentText, this.contentIcon);
   @override
   Widget build(BuildContext context) {
     return Column(
