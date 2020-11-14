@@ -3,11 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import "card_content.dart";
 import 'reuseable_card.dart';
-
-const bottomContainerHeight = 80.0;
-const activeCardColor = Color(0xFF1D1E33);
-const inactiveCardColor = Color(0xFF111328);
-const bottomContainerColor = Color(0xFFEB1555);
+import 'constants.dart';
 
 Color maleCardColor;
 Color femaleCardColor;
@@ -30,6 +26,7 @@ class _InputPageState extends State<InputPage> {
         title: Text('BMI CALCULATOR'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             flex: 3,
@@ -38,8 +35,8 @@ class _InputPageState extends State<InputPage> {
                 Expanded(
                   child: ReuseableCard(
                     maleCardColor = selectedGender == Gender.male
-                        ? activeCardColor
-                        : inactiveCardColor,
+                        ? kActiveCardColor
+                        : kInactiveCardColor,
                     CardContent(
                       "MALE",
                       Icon(
@@ -47,13 +44,20 @@ class _InputPageState extends State<InputPage> {
                         size: 80,
                       ),
                     ),
+                    () {
+                      setState(
+                        () {
+                          selectedGender = Gender.male;
+                        },
+                      );
+                    },
                   ),
                 ),
                 Expanded(
                   child: ReuseableCard(
                     femaleCardColor = selectedGender == Gender.female
-                        ? activeCardColor
-                        : inactiveCardColor,
+                        ? kActiveCardColor
+                        : kInactiveCardColor,
                     CardContent(
                       "FEMALE",
                       Icon(
@@ -61,6 +65,13 @@ class _InputPageState extends State<InputPage> {
                         size: 80,
                       ),
                     ),
+                    () {
+                      setState(
+                        () {
+                          selectedGender = Gender.female;
+                        },
+                      );
+                    },
                   ),
                 ),
               ],
@@ -69,7 +80,15 @@ class _InputPageState extends State<InputPage> {
           Expanded(
             flex: 3,
             child: ReuseableCard(
-              activeCardColor,
+              kActiveCardColor,
+              Column(
+                children: [
+                  Text(
+                    "HEIGHT",
+                    style: kTextStyle,
+                  )
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -78,22 +97,22 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: ReuseableCard(
-                    activeCardColor,
+                    kActiveCardColor,
                   ),
                 ),
                 Expanded(
                   child: ReuseableCard(
-                    activeCardColor,
+                    kActiveCardColor,
                   ),
                 ),
               ],
             ),
           ),
           Container(
-            color: bottomContainerColor,
+            color: kBottomContainerColor,
             margin: EdgeInsets.only(top: 10),
             width: double.infinity,
-            height: bottomContainerHeight,
+            height: kBottomContainerHeight,
           ),
         ],
       ),
