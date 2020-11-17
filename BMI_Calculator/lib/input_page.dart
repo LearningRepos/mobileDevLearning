@@ -1,9 +1,12 @@
+import 'package:bmi_calculator/results_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import "card_content.dart";
 import 'reuseable_card.dart';
 import 'constants.dart';
+import "calculator_brain.dart";
+import 'results_page.dart';
 
 enum Gender { male, female }
 enum Operation { add, subtract }
@@ -230,11 +233,34 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            color: kBottomContainerColor,
-            margin: EdgeInsets.only(top: 10),
-            width: double.infinity,
-            height: kBottomContainerHeight,
+          GestureDetector(
+            onTap: () {
+              CalculatorBrain calc = new CalculatorBrain(height, weight);
+              // Navigator.pushNamed(context, "/results");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultsPage(
+                    calc.getResult(),
+                    calc.calculateBMI(),
+                    calc.getInterpretation(),
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              color: kBottomContainerColor,
+              height: kBottomContainerHeight,
+              child: Center(
+                child: Text(
+                  "CALCULATE",
+                  style: kLargeButtonTextStyle,
+                ),
+              ),
+              margin: EdgeInsets.only(top: 10),
+              width: double.infinity,
+              padding: EdgeInsets.only(bottom: 20),
+            ),
           ),
         ],
       ),
