@@ -1,69 +1,34 @@
-# Clima-Flutter educational weather app
+![App Brewery Banner](https://github.com/londonappbrewery/Images/blob/master/AppBreweryBanner.png)
 
-A very basic educational weather app that fetches the current weather conditions in various locations by utilizing the OpenWeatherMap API.
 
-## Screenshots
+# Clima ☁
 
-![City search screens](docs/images/clima-screenshot-city-screen.png)
-![Location weather screen](docs/images/clima-screenshot-location-screen.png)
-![Loading screen](docs/images/climan-screenshot-loading-screen.png)
+## Our Goal
 
-## To test and build
+The objective of this tutorial is to learn about asynchronous programming in Dart. We'll look at how to carry out time consuming tasks such as getting device location and networking to get data from the internet. 
 
-* Get an API key from OpenWeatherMap. (They send you an email verification notice and then you would have to wait for 2 hours).
-* Edit lib/utilities/apikey_rename.dart to hold your API key.
-* Rename apikey_rename.dart to apikey.dart
-* Open an emulaton. On Mac 'open -a Simulator' for iOS simulator. Otherwise use Android Studio to run Android emulators. 
-* Run 'flutter pub get' in a terminal from the main project folder. 
-* Run 'flutter run' in the terminal. 
-* To build (Android): Add your own android/key.propertis file using the keytool. 
-* Modify app id to your own everywhere. 
-* Run 'flutter build apk --no-shrink' in a terminal from the project root folder. 
 
-### To modify the icon
+## What you will create
 
-You can edit docs/images/icon-clima-tailorvj.xcf in GIMP to modify the existing icon. 
+We’re going to make a weather app inspired by the beautiful designs made by [Olia Gozha](https://dribbble.com/shots/4663154-). By the end of the module, you'll be able to find out the live weather data in the current location of the device as well as the weather for any city you can think of!
 
-![Clima app icon by Tailor VJ CC-BY Tailor VJ](docs/images/icon-clima-tailorvj.png)
+![Finished App](https://github.com/londonappbrewery/Images/blob/master/clima-demo.gif)
 
-The above icon is published under Creative Commons 4.0 and requires credit to Tailor VJ. 
+## What you will learn
 
-### To generate your own app icon
+- How to use Dart to perform asynchronous tasks.
+- Understand async and await.
+- Learn about Futures and how to work with them.
+- How to network with the Dart http package.
+- What APIs are and how to use them to get data from the internet.
+- What JSONs are and how to parse them using the Dart convert package.
+- How to pass data forwards and backwards between screens using the Navigator.
+- How to handle exceptions in Dart using try/catch/throw.
+- Learn about the lifecycle of Stateful Widgets and how to override them.
+- How to use the Geolocator package to get live location data for both iOS and Android.
+- How to use the TextField Widget to take user input.
 
-* Replace assets/icon/icon.png with your own 432x432 icon image.
-* Run 'flutter pub run flutter_launcher_icons:main' in the terminal.
 
-## Uses
+>This is a companion project to The App Brewery's Complete Flutter Development Bootcamp, check out the full course at [www.appbrewery.co](https://www.appbrewery.co/)
 
-* Futures, async, await.
-* OpenWeaterMap API.
-* Mobild device location permissions and GPS.
-* Dart http package for API utilization. 
-* Geolocator package for device location. 
-* Flutter launcer icons package for building all necessary distribution icons for iOS and Android. 
-* Dart convert package to decode JSON data. 
-* Flutter Navigator to route between screens and send data between them. 
-
-### Packages used (in pubspec.yaml)
-
-* geolocator: ^5.3.1
-* http: ^0.12.1
-* flutter_spinkit: ^4.1.2
-* flutter_launcher_icons: ^0.7.5
-
-## Credits
-
-A weather app inspired by the beautiful designs made by [Olia Gozha](https://dribbble.com/shots/4663154-).
-
-App icon is licensed under Creative Commons 4.0 and is a remix by Tailor VJ to 2 CC-licensed icons by:
-
-* ![Rain Icon](https://upload.wikimedia.org/wikipedia/commons/2/2c/Rain_%28CoreUI_Icons_v1.0.0%29.svg) "File:Rain (CoreUI Icons v1.0.0).svg" by CoreUI is licensed under CC BY 4.0
-* ![Sun Icon](https://upload.wikimedia.org/wikipedia/commons/e/ed/OOjs_UI_icon_sun-ltr.svg) "File:OOjs UI icon sun-ltr.svg" by MGalloway (WMF) (WMF User Experience Design group) is licensed under CC BY-SA 4.0
-
-This app was built during a Flutter course series by London App Brewery. 
-
-## License GPL v3
-
-[Copy of GPL v3 License](LICENSE.txt)
-
-All rights reserved to Asaf Prihadash Tailor VJ
+![End Banner](https://github.com/londonappbrewery/Images/blob/master/readme-end-banner.png)
