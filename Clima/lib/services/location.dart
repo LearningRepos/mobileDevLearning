@@ -16,4 +16,12 @@ class Location {
       print(e);
     }
   }
+
+  double getLatitude() {
+    return _latitude;
+  }
+
+  double getLongitude() {
+    return _longitude;
+  }
 }
