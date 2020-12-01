@@ -5,6 +5,13 @@ String apiKey = '73301a55115867f0c4504fca82cd9ff0';
 String openWeatherMapURL = "http://api.openweathermap.org/data/2.5/weather";
 
 class WeatherModel {
+  Future getCityWeather(String cityName) async {
+    var netHelp = NetworkHelper(
+        "$openWeatherMapURL?q=$cityName&appid=$apiKey&units=metric");
+    var weatherData = await netHelp.getData();
+    return weatherData;
+  }
+
   Future getLocationWeather() async {
     Location location = new Location();
     await location.getCurrentLocation();
