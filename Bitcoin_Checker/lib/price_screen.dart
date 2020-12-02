@@ -1,3 +1,6 @@
+import 'dart:io' show Platform;
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'coin_data.dart';
@@ -9,17 +12,74 @@ class PriceScreen extends StatefulWidget {
 
 class _PriceScreenState extends State<PriceScreen> {
   String startingCurrency = "USD";
-  List<DropdownMenuItem<String>> getMenuCurrencies(List<String> list) {
-    List<DropdownMenuItem<String>> newList = new List();
-    for (var i = 0; i < list.length; i++) {
-      newList.add(
-        DropdownMenuItem(
-          child: Text('${list[i]}'),
-          value: list[i],
-        ),
-      );
+
+  DropdownButton<String> getAndroidPicker() {
+    List<DropdownMenuItem<String>> getMenuCurrencies(List<String> list) {
+      List<DropdownMenuItem<String>> newList = new List();
+      for (var i = 0; i < list.length; i++) {
+        newList.add(
+          DropdownMenuItem(
+            child: Center(
+              child: Text(
+                '${list[i]}',
+              ),
+            ),
+            value: list[i],
+          ),
+        );
+      }
+      return newList;
     }
-    return newList;
+
+    return DropdownButton<String>(
+      value: "$startingCurrency",
+      items: getMenuCurrencies(currenciesList),
+      onChanged: (value) {
+        setState(() {
+          startingCurrency = value;
+        });
+      },
+    );
+  }
+
+  CupertinoPicker getIOSPicker() {
+    List<DropdownMenuItem<String>> getMenuCurrencies(List<String> list) {
+      List<DropdownMenuItem<String>> newList = new List();
+      for (var i = 0; i < list.length; i++) {
+        newList.add(
+          DropdownMenuItem(
+            child: Center(
+              child: Text(
+                '${list[i]}',
+              ),
+            ),
+            value: list[i],
+          ),
+        );
+      }
+      return newList;
+    }
+
+    return CupertinoPicker(
+      backgroundColor: Colors.lightBlue,
+      itemExtent: 32.0,
+      onSelectedItemChanged: (value) {
+        setState(() {
+          List<DropdownMenuItem<String>> list =
+              getMenuCurrencies(currenciesList);
+          startingCurrency = list[value].value;
+        });
+      },
+      children: getMenuCurrencies(currenciesList),
+    );
+  }
+
+  Widget getVersionPicker() {
+    if (Platform.isIOS) {
+      return getIOSPicker();
+    } else if (Platform.isAndroid) {
+      return getAndroidPicker();
+    }
   }
 
   @override
@@ -58,15 +118,7 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: DropdownButton<String>(
-              value: "$startingCurrency",
-              items: getMenuCurrencies(currenciesList),
-              onChanged: (value) {
-                setState(() {
-                  startingCurrency = value;
-                });
-              },
-            ),
+            child: getVersionPicker(),
           ),
         ],
       ),
