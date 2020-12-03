@@ -12,6 +12,7 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
+  Coin_API bitcoin = Coin_API();
   String startingCurrency = "USD";
   double bitCoinValue;
 
@@ -40,6 +41,7 @@ class _PriceScreenState extends State<PriceScreen> {
         setState(() {
           startingCurrency = value;
         });
+        updateAPIData(value);
       },
     );
   }
@@ -85,9 +87,18 @@ class _PriceScreenState extends State<PriceScreen> {
   }
 
   Future getAPIData() async {
-    Coin_API bitcoin = Coin_API();
-    var resultJson = await bitcoin.getData();
-    bitCoinValue = resultJson["rate"];
+    var resultJson = await bitcoin.getStarterData();
+    setState(() {
+      bitCoinValue = resultJson["rate"];
+    });
+    return resultJson;
+  }
+
+  Future updateAPIData(String currency) async {
+    var resultJson = await bitcoin.getCurrencyData(currency);
+    setState(() {
+      bitCoinValue = resultJson["rate"];
+    });
     return resultJson;
   }
 
