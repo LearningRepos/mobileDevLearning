@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'coin_api.dart';
 import 'coin_data.dart';
 
 class PriceScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class PriceScreen extends StatefulWidget {
 
 class _PriceScreenState extends State<PriceScreen> {
   String startingCurrency = "USD";
+  double bitCoinValue;
 
   DropdownButton<String> getAndroidPicker() {
     List<DropdownMenuItem<String>> getMenuCurrencies(List<String> list) {
@@ -77,9 +79,21 @@ class _PriceScreenState extends State<PriceScreen> {
   Widget getVersionPicker() {
     if (Platform.isIOS) {
       return getIOSPicker();
-    } else if (Platform.isAndroid) {
+    } else {
       return getAndroidPicker();
     }
+  }
+
+  Future getAPIData() async {
+    Coin_API bitcoin = Coin_API();
+    var resultJson = await bitcoin.getData();
+    bitCoinValue = resultJson["rate"];
+    return resultJson;
+  }
+
+  @override
+  void initState() {
+    getAPIData();
   }
 
   @override
@@ -103,7 +117,7 @@ class _PriceScreenState extends State<PriceScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = ? $startingCurrency',
+                  '1 BTC = $bitCoinValue $startingCurrency',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,
