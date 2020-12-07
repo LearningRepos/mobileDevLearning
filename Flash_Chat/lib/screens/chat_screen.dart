@@ -9,9 +9,12 @@ class ChatScreen extends StatefulWidget {
   _ChatScreenState createState() => _ChatScreenState();
 }
 
+final _firestore = FirebaseFirestore.instance;
+User loggedInUser;
+
 class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
+
   final messageTextController = TextEditingController();
   User loggedInUser;
   String messageText;
@@ -21,7 +24,6 @@ class _ChatScreenState extends State<ChatScreen> {
       final user = _auth.currentUser;
       if (user != null) {
         loggedInUser = user;
-        print(loggedInUser.email);
       }
     } catch (e) {
       print(e);
@@ -71,7 +73,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            MessagesStream(),
+            MessagesStream(loggedInUser),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -91,7 +93,12 @@ class _ChatScreenState extends State<ChatScreen> {
                   FlatButton(
                     onPressed: () {
                       _firestore.collection('messages').add(
-                          {'text': messageText, 'sender': loggedInUser.email});
+                        {
+                          'text': messageText,
+                          'sender': loggedInUser.email,
+                          'timestamp': DateTime.now(),
+                        },
+                      );
                       messagesStream();
                       messageTextController.clear();
                     },
@@ -112,20 +119,30 @@ class _ChatScreenState extends State<ChatScreen> {
 
 class MessagesStream extends StatelessWidget {
   final _firestore = FirebaseFirestore.instance;
+  final loggedUser;
+  MessagesStream(this.loggedUser);
   @override
   Widget build(BuildContext context) {
+    print(loggedUser.email);
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('messages').snapshots(),
+      stream:
+          _firestore.collection('messages').orderBy('timestamp').snapshots(),
       builder: (context, snapshot) {
         List<MessageBubble> messageWidgets = [];
         if (snapshot.hasData) {
-          final messages = snapshot.data.docs;
+          final messages = snapshot.data.docs.reversed;
 
           for (var message in messages) {
             var messageData = message.data();
             var messageText = messageData['text'];
             var messageSender = messageData['sender'];
-            var messageWidget = MessageBubble(messageSender, messageText);
+            bool isMe;
+            if (loggedUser.email == messageSender) {
+              isMe = true;
+            } else {
+              isMe = false;
+            }
+            var messageWidget = MessageBubble(messageSender, messageText, isMe);
             messageWidgets.add(messageWidget);
           }
         } else {
@@ -137,6 +154,7 @@ class MessagesStream extends StatelessWidget {
         }
         return Expanded(
           child: ListView(
+            reverse: true,
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             children: messageWidgets,
           ),
@@ -149,13 +167,15 @@ class MessagesStream extends StatelessWidget {
 class MessageBubble extends StatelessWidget {
   final String sender;
   final String text;
-  MessageBubble(this.sender, this.text);
+  final bool isMe;
+  MessageBubble(this.sender, this.text, this.isMe);
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
             sender,
@@ -165,9 +185,17 @@ class MessageBubble extends StatelessWidget {
             ),
           ),
           Material(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: isMe
+                ? BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10))
+                : BorderRadius.only(
+                    topRight: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10)),
             elevation: 5,
-            color: Colors.lightBlueAccent,
+            color: isMe ? Colors.lightBlueAccent : Colors.grey,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Text(
