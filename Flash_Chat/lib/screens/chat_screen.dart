@@ -28,6 +28,21 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  void getMessages() async {
+    var data = await _firestore.collection('messages').getDocuments();
+    for (var i in data.documents) {
+      print(i.data());
+    }
+  }
+
+  void messagesStream() async {
+    await for (var i in _firestore.collection('messages').snapshots()) {
+      for (var j in i.documents) {
+        print(j.data());
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -55,6 +70,27 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            StreamBuilder<QuerySnapshot>(
+              stream: _firestore.collection('messages').snapshots(),
+              builder: (context, snapshot) {
+                List<Text> messageWidgets = [];
+                if (snapshot.hasData) {
+                  final messages = snapshot.data.docs;
+
+                  for (var message in messages) {
+                    var messageData = message.data();
+                    var messageText = messageData['text'];
+                    var messageSender = messageData['sender'];
+                    var messageWidget =
+                        Text("$messageSender sent $messageText");
+                    messageWidgets.add(messageWidget);
+                  }
+                }
+                return Column(
+                  children: messageWidgets,
+                );
+              },
+            ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -74,6 +110,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     onPressed: () {
                       _firestore.collection('messages').add(
                           {'text': messageText, 'sender': loggedInUser.email});
+                      messagesStream();
                     },
                     child: Text(
                       'Send',
