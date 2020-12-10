@@ -23,6 +23,12 @@ class _TasksScreenState extends State<TasksScreen> {
     });
   }
 
+  void deleteTask(int index) {
+    setState(() {
+      tasks.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,7 +100,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   topRight: Radius.circular(20),
                 ),
               ),
-              child: TasksList(tasks),
+              child: TasksList(tasks, deleteTask),
             ),
           ),
         ],

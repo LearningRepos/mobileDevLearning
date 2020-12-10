@@ -4,7 +4,8 @@ import 'package:Todoey/models/task.dart';
 
 class TasksList extends StatefulWidget {
   final List<Task> tasks;
-  TasksList(this.tasks);
+  final Function deleteTask;
+  TasksList(this.tasks, this.deleteTask);
   @override
   _TasksListState createState() => _TasksListState();
 }
@@ -22,6 +23,8 @@ class _TasksListState extends State<TasksList> {
               widget.tasks[index].toggleDone();
             });
           },
+          index,
+          widget.deleteTask,
         );
       },
       itemCount: widget.tasks.length,
