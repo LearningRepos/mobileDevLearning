@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
-class AddTaskScreen extends StatelessWidget {
+class AddTaskScreen extends StatefulWidget {
+  final Function addTaskSubmit;
+  AddTaskScreen(this.addTaskSubmit);
+  @override
+  _AddTaskScreenState createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+  String taskMessage;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,6 +37,11 @@ class AddTaskScreen extends StatelessWidget {
                 child: TextField(
                   textAlign: TextAlign.center,
                   autofocus: true,
+                  onChanged: (value) {
+                    setState(() {
+                      taskMessage = value;
+                    });
+                  },
                   decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(
                       borderSide:
@@ -45,7 +58,10 @@ class AddTaskScreen extends StatelessWidget {
                 height: 30,
               ),
               FlatButton(
-                onPressed: () {},
+                onPressed: () {
+                  widget.addTaskSubmit(taskMessage);
+                  Navigator.pop(context);
+                },
                 child: Text("Add"),
                 color: Colors.lightBlue[200],
                 textColor: Colors.white,
