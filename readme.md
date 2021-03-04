@@ -1,6 +1,6 @@
 ## flutterLearning
 
-This repo is my code for Angela Yu's Flutter course where I learnt the basics of Flutter and how to combine it with Firebase.
+This repo is my code for Angela Yu's Flutter course where I learnt the basics of Flutter and how to combine it with Firebase and a tutorial app built with React Native.
 
 ## Installation
 
