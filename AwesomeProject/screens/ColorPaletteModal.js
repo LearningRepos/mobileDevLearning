@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet, Alert } from "react-native";
 import { FlatList, Switch, TextInput } from "react-native-gesture-handler";
 
 class ColorPaletteModal extends React.Component {
@@ -17,8 +17,17 @@ class ColorPaletteModal extends React.Component {
     });
   }
   handlePress() {
-    this.props.route.params(this.state.newColors, this.state.paletteName);
-    this.props.navigation.navigate("Home");
+    if (this.state.paletteName.length === 0) {
+      Alert.alert("Please enter a valid palette name");
+    } else if (
+      this.state.newColors.filter((color, index) => color["selected"] === true)
+        .length <= 2
+    ) {
+      Alert.alert("Select 3 or more colors");
+    } else {
+      this.props.route.params(this.state.newColors, this.state.paletteName);
+      this.props.navigation.navigate("Home");
+    }
   }
   render() {
     return (
